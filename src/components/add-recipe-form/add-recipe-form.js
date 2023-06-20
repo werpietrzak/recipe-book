@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export const AddRecipeForm = () => {
     const [ingredients, setIngredientFields] = useState([]);
     const [steps, setStepFields] = useState([]);
 
+    const { register, handleSubmit } = useForm();
+
     const addNewIngredientField = () => {
         setIngredientFields([
             ...ingredients,
             {
-                fieldId: `ingredient-${ingredients.length + 1}`,
+                fieldId: ingredients.length,
+                fieldKey: `ingredient-${ingredients.length + 1}`,
             },
         ]);
     };
@@ -22,7 +26,8 @@ export const AddRecipeForm = () => {
         setStepFields([
             ...steps,
             {
-                fieldId: `step-${steps.length + 1}`,
+                fieldId: steps.length,
+                fieldKey: `step-${steps.length + 1}`,
             },
         ]);
     };
@@ -32,22 +37,36 @@ export const AddRecipeForm = () => {
         setStepFields(updatedFields);
     };
 
+    const onSubmit = data => console.log(data);
+
     return (
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <label htmlFor="name">Name</label>
-                <input id="name" type="text" />
+                <input id="name" type="text" {...register('name')} />
             </div>
-            {ingredients.map(({ fieldId }) => (
-                <div key={fieldId}>
-                    <label htmlFor={`${fieldId}_name`}>Name</label>
-                    <input id={`${fieldId}_name`} type="text" />
-                    <label htmlFor={`${fieldId}_qty`}>Qty</label>
-                    <input id={`${fieldId}_qty`} type="number" />
-                    <label htmlFor={`${fieldId}_measurement`}>
+            {ingredients.map(({ fieldId, fieldKey }) => (
+                <div key={fieldKey}>
+                    <label htmlFor={`${fieldKey}_name`}>Name</label>
+                    <input
+                        id={`${fieldKey}_name`}
+                        type="text"
+                        {...register(`ingredients.${fieldId}.name`)}
+                    />
+                    <label htmlFor={`${fieldKey}_qty`}>Qty</label>
+                    <input
+                        id={`${fieldKey}_qty`}
+                        type="number"
+                        {...register(`ingredients.${fieldId}.qty`)}
+                    />
+                    <label htmlFor={`${fieldKey}_measurement`}>
                         Measurement
                     </label>
-                    <input id={`${fieldId}_measurement`} type="text" />
+                    <input
+                        id={`${fieldKey}_measurement`}
+                        type="text"
+                        {...register(`ingredients.${fieldId}.measurement`)}
+                    />
                     <button
                         type="button"
                         value={fieldId}
@@ -62,10 +81,10 @@ export const AddRecipeForm = () => {
                     Add ingredient
                 </button>
             </div>
-            {steps.map(({ fieldId }) => (
-                <div key={fieldId}>
-                    <label htmlFor={fieldId}>Description</label>
-                    <textarea id={fieldId} />
+            {steps.map(({ fieldId, fieldKey }) => (
+                <div key={fieldKey}>
+                    <label htmlFor={fieldKey}>Description</label>
+                    <textarea id={fieldKey} {...register(`steps.${fieldId}`)} />
                     <button
                         type="button"
                         value={fieldId}
