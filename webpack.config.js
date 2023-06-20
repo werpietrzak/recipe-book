@@ -4,6 +4,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
     filename: './index.html',
 });
 module.exports = {
+    output: {
+        publicPath: '/',
+    },
     mode: 'development',
     module: {
         rules: [
@@ -19,6 +22,9 @@ module.exports = {
                 use: ['style-loader', 'css-loader'],
             },
         ],
+    },
+    devServer: {
+        historyApiFallback: true,
     },
     plugins: [htmlPlugin],
 };
