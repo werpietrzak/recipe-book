@@ -1,6 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { AddRecipeForm } from './components/add-recipe-form';
 
-const App = () => <h1>Hello world</h1>;
+const App = () => (
+    <div>
+        <AddRecipeForm />
+    </div>
+);
 
-ReactDOM.render(<App />, document.getElementById('app'));
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+root.render(<App />);
