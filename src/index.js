@@ -1,10 +1,22 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { AddRecipeForm } from './components/add-recipe-form';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AddNewRecipe, Recipes } from './routes';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Recipes />,
+    },
+    {
+        path: '/add',
+        element: <AddNewRecipe />,
+    },
+]);
 
 const App = () => (
     <div>
-        <AddRecipeForm />
+        <RouterProvider router={router} />
     </div>
 );
 
